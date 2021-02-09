@@ -8,14 +8,18 @@ from .models import Book, Author, Publisher
 
 
 class BooksModelViewSet(ModelViewSet):
-    serializer_class = BooksListSerializer
+    serializer_class = BookSerializer
     detail_serializer_class = BooksDetailSerializer
+    list_serializer_class = BooksListSerializer
     queryset = Book.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             if hasattr(self, 'detail_serializer_class'):
                 return self.detail_serializer_class
+        if self.action == 'list':
+            if hasattr(self, 'list_serializer_class'):
+                return self.list_serializer_class
 
         return super(ModelViewSet, self).get_serializer_class()
 
@@ -47,7 +51,15 @@ class AuthorModelViewSet(ModelViewSet):
 
     def put(self, request, pk, format=None):
         author = self.get_object(pk)
-        serializer = BooksDetailSerializer(author, data=request.data)
+        serializer = AuthorsSerializer(author, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk, format=None):
+        publisher = self.get_object(pk)
+        serializer = AuthorsSerializer(publisher, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

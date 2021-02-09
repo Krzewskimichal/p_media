@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, Serializer
+from rest_framework.serializers import ModelSerializer, Serializer, CharField
 
 from .models import Book, Author, Publisher
 
@@ -42,3 +42,9 @@ class BooksListSerializer(ModelSerializer):
     class Meta:
         model = Book
         fields = ('id', 'title', 'cover_image', 'publisher')
+
+
+class BookSerializer(ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
