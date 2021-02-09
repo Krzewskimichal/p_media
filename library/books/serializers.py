@@ -3,21 +3,21 @@ from rest_framework.serializers import ModelSerializer
 from .models import Book, Author, Publisher
 
 
-class BookSerializer(ModelSerializer):
+class BooksSerializer(ModelSerializer):
 
     class Meta:
         model = Book
         fields = '__all__'
 
 
-class AuthorSerializer(ModelSerializer):
+class AuthorsSerializer(ModelSerializer):
 
     class Meta:
         model = Author
         fields = '__all__'
 
 
-class PublisherSerializer(ModelSerializer):
+class PublishersSerializer(ModelSerializer):
 
     class Meta:
         model = Publisher

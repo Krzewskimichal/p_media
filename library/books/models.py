@@ -20,7 +20,8 @@ class Author(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=128)
-    publisher = models.ManyToManyField(Publisher)
+    author = models.ManyToManyField(Author)
+    publisher = models.ForeignKey(Publisher, null=True, on_delete=models.SET_NULL)
     pages_num = models.IntegerField()
     cover_image = models.ImageField()
 
