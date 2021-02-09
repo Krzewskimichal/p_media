@@ -3,6 +3,7 @@ from django.dispatch import receiver
 
 import os
 
+
 class Publisher(models.Model):
     name = models.CharField(max_length=128)
 

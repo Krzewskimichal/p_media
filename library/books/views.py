@@ -1,19 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import BooksSerializer, AuthorsSerializer, PublishersSerializer
+from .serializers import *
 from .models import Book, Author, Publisher
 
 
 class BooksModelViewSet(ModelViewSet):
-    serializer_class = BooksSerializer
+    serializer_class = BooksListSerializer
+    detail_serializer_class = BooksDetailSerializer
     queryset = Book.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            if hasattr(self, 'detail_serializer_class'):
+                return self.detail_serializer_class
+
+        return super(ModelViewSet, self).get_serializer_class()
 
     def put(self, request, pk, format=None):
         book = self.get_object(pk)
-        serializer = BooksSerializer(book, data=request.data)
+        serializer = BooksDetailSerializer(book, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -21,7 +29,7 @@ class BooksModelViewSet(ModelViewSet):
 
     def patch(self, request, pk, format=None):
         book = self.get_object(pk)
-        serializer = BooksSerializer(book, data=request.data)
+        serializer = BooksDetailSerializer(book, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -39,7 +47,7 @@ class AuthorModelViewSet(ModelViewSet):
 
     def put(self, request, pk, format=None):
         author = self.get_object(pk)
-        serializer = BooksSerializer(author, data=request.data)
+        serializer = BooksDetailSerializer(author, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -57,7 +65,7 @@ class PublisherModelViewSet(ModelViewSet):
 
     def put(self, request, pk, format=None):
         publisher = self.get_object(pk)
-        serializer = BooksSerializer(publisher, data=request.data)
+        serializer = PublishersSerializer(publisher, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -65,7 +73,7 @@ class PublisherModelViewSet(ModelViewSet):
 
     def patch(self, request, pk, format=None):
         publisher = self.get_object(pk)
-        serializer = BooksSerializer(publisher, data=request.data)
+        serializer = PublishersSerializer(publisher, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -1,31 +1,44 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from .models import Book, Author, Publisher
 
 
-class BooksSerializer(ModelSerializer):
-
-    class Meta:
-        model = Book
-        fields = '__all__'
-
-    # def update(self, instance, validated_data):
-    #     instance.title = validated_data.get('title', instance.title)
-    #     instance.pages_num = validated_data.get('pages_num', instance.pages_num)
-    #     instance.publisher = validated_data.get('publisher', instance.publisher)
-    #     instance.save()
-    #     return instance
-
-
 class AuthorsSerializer(ModelSerializer):
-
     class Meta:
         model = Author
         fields = '__all__'
 
 
 class PublishersSerializer(ModelSerializer):
-
     class Meta:
         model = Publisher
         fields = '__all__'
+
+
+class BookDetailsAuthorSerializer(ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['firstname', 'lastname']
+
+
+class BookDetailPublisherSerializer(ModelSerializer):
+    class Meta:
+        model = Publisher
+        fields = ['name']
+
+
+class BooksDetailSerializer(ModelSerializer):
+    publisher = BookDetailPublisherSerializer()
+    author = BookDetailsAuthorSerializer(many=True)
+
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'pages_num', 'author', 'publisher']
+
+
+class BooksListSerializer(ModelSerializer):
+    publisher = BookDetailPublisherSerializer()
+
+    class Meta:
+        model = Book
+        fields = ('id', 'title', 'cover_image', 'publisher')
