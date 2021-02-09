@@ -9,6 +9,13 @@ class BooksSerializer(ModelSerializer):
         model = Book
         fields = '__all__'
 
+    # def update(self, instance, validated_data):
+    #     instance.title = validated_data.get('title', instance.title)
+    #     instance.pages_num = validated_data.get('pages_num', instance.pages_num)
+    #     instance.publisher = validated_data.get('publisher', instance.publisher)
+    #     instance.save()
+    #     return instance
+
 
 class AuthorsSerializer(ModelSerializer):
 

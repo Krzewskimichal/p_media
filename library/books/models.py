@@ -12,7 +12,7 @@ class Author(models.Model):
     firstname = models.CharField(max_length=64)
     lastname = models.CharField(max_length=64)
     nickname = models.CharField(max_length=64)
-    birthdate = models.DateTimeField(blank=True)
+    birthdate = models.DateField(blank=True)
 
     def __str__(self):
         return f"{self.firstname} {self.lastname}"
